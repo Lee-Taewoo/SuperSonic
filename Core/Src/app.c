@@ -37,7 +37,37 @@ void app() {
 	HAL_TIM_Base_Start(&htim11);
 	initUltrasonic(&htim3);
 	while(1) {
+			uint8_t distance = getDistance();
 			printf("distance = %d\n", getDistance());
-			HAL_Delay(450);
+			if (distance > 50) {
+				stopSound();
+			}
+			else if(distance > 20) {
+				setSound(500);
+				HAL_Delay(500);
+				stopSound(500);
+				HAL_Delay(500);
+			}
+			else if (distance > 15) {
+				setSound(400);
+				HAL_Delay(400);
+				stopSound(400);
+				HAL_Delay(400);
+			}
+			else if (distance > 10) {
+				setSound(300);
+				HAL_Delay(300);
+				stopSound(300);
+				HAL_Delay(300);
+			}
+			else if (distance > 5) {
+				setSound(200);
+				HAL_Delay(200);
+				stopSound(200);
+				HAL_Delay(200);
+			}
+			else {
+				htim1.Instance->CCR1 = htim1.Instance->ARR/2;
+			}
 		}
 }
